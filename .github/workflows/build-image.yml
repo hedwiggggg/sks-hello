@@ -1,5 +1,9 @@
 name: Build sks-hello image
-on: push
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
 
 jobs:
   build-sks-hello:
