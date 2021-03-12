@@ -1,0 +1,31 @@
+name: Build sks-hello image
+on: push
+
+jobs:
+  build-sks-hello:
+    name: Build sks-hello image
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Create config file
+        run: ./create-config.sh
+        env:
+          DEFAULT_BRANCH: main
+          SKS_HELLO_USER_PASS: ${{ secrets.SKS_HELLO_USER_PASS }}
+
+      - name: Build image
+        run: ./build-docker.sh
+
+      - name: Release image
+        uses: softprops/action-gh-release@v1
+
+        with:
+          draft: false
+          prerelease: false
+          files: ./deploy/*.zip
+
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

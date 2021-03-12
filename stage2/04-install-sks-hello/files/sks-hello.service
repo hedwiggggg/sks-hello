@@ -1,0 +1,10 @@
+[Unit]
+Description=sks-hello service
+After=multi-user.target
+
+[Service]
+Type=idle
+ExecStart=/home/sks/hello/run-sks-hello.sh
+
+[Install]
+WantedBy=multi-user.target
