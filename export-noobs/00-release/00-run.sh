@@ -2,13 +2,13 @@
 
 NOOBS_DIR="${STAGE_WORK_DIR}/${IMG_DATE}-${IMG_NAME}${IMG_SUFFIX}"
 
-install -v -m 744	files/partition_setup.sh	"${NOOBS_DIR}/"
-install -v		files/partitions.json		"${NOOBS_DIR}/"
-install -v		files/os.json			"${NOOBS_DIR}/"
-install -v		files/OS.png			"${NOOBS_DIR}/"
-install -v		files/release_notes.txt		"${NOOBS_DIR}/"
+install -v -m 744 files/partition_setup.sh  "${NOOBS_DIR}/"
+install -v        files/partitions.json     "${NOOBS_DIR}/"
+install -v        files/os.json             "${NOOBS_DIR}/"
+install -v        files/OS.png              "${NOOBS_DIR}/"
+install -v        files/release_notes.txt   "${NOOBS_DIR}/"
 
-tar -v -c -C		files/marketing			-f "${NOOBS_DIR}/marketing.tar" .
+tar -v -c -C files/marketing -f "${NOOBS_DIR}/marketing.tar" .
 
 BOOT_SHASUM="$(sha256sum "${NOOBS_DIR}/boot.tar.xz" | cut -f1 -d' ')"
 ROOT_SHASUM="$(sha256sum "${NOOBS_DIR}/root.tar.xz" | cut -f1 -d' ')"
@@ -42,7 +42,7 @@ sed "${NOOBS_DIR}/os.json" -i -e "s|KERNEL|$(cat "${STAGE_WORK_DIR}/kernel_versi
 sed "${NOOBS_DIR}/release_notes.txt" -i -e "s|UNRELEASED|${IMG_DATE}|"
 
 if [ "${USE_QCOW2}" = "1" ]; then
-	mv "${NOOBS_DIR}" "${DEPLOY_DIR}/"
+  mv "${NOOBS_DIR}" "${DEPLOY_DIR}/"
 else
-	cp -a "${NOOBS_DIR}" "${DEPLOY_DIR}/"
+  cp -a "${NOOBS_DIR}" "${DEPLOY_DIR}/"
 fi

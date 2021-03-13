@@ -4,9 +4,9 @@ NOOBS_DIR="${STAGE_WORK_DIR}/${IMG_DATE}-${IMG_NAME}${IMG_SUFFIX}"
 mkdir -p "${STAGE_WORK_DIR}"
 
 if [ "${DEPLOY_ZIP}" == "1" ]; then
-	IMG_FILE="${WORK_DIR}/export-image/${IMG_FILENAME}${IMG_SUFFIX}.img"
+  IMG_FILE="${WORK_DIR}/export-image/${IMG_FILENAME}${IMG_SUFFIX}.img"
 else
-	IMG_FILE="${DEPLOY_DIR}/${IMG_FILENAME}${IMG_SUFFIX}.img"
+  IMG_FILE="${DEPLOY_DIR}/${IMG_FILENAME}${IMG_SUFFIX}.img"
 fi
 
 unmount_image "${IMG_FILE}"
@@ -23,27 +23,27 @@ ROOT_LENGTH=$(echo "$PARTED_OUT" | grep -e '^2:' | cut -d':' -f 4 | tr -d B)
 echo "Mounting BOOT_DEV..."
 cnt=0
 until BOOT_DEV=$(losetup --show -f -o "${BOOT_OFFSET}" --sizelimit "${BOOT_LENGTH}" "${IMG_FILE}"); do
-	if [ $cnt -lt 5 ]; then
-		cnt=$((cnt + 1))
-		echo "Error in losetup for BOOT_DEV.  Retrying..."
-		sleep 5
-	else
-		echo "ERROR: losetup for BOOT_DEV failed; exiting"
-		exit 1
-	fi
+  if [ $cnt -lt 5 ]; then
+    cnt=$((cnt + 1))
+    echo "Error in losetup for BOOT_DEV.  Retrying..."
+    sleep 5
+  else
+    echo "ERROR: losetup for BOOT_DEV failed; exiting"
+    exit 1
+  fi
 done
 
 echo "Mounting ROOT_DEV..."
 cnt=0
 until ROOT_DEV=$(losetup --show -f -o "${ROOT_OFFSET}" --sizelimit "${ROOT_LENGTH}" "${IMG_FILE}"); do
-	if [ $cnt -lt 5 ]; then
-		cnt=$((cnt + 1))
-		echo "Error in losetup for ROOT_DEV.  Retrying..."
-		sleep 5
-	else
-		echo "ERROR: losetup for ROOT_DEV failed; exiting"
-		exit 1
-	fi
+  if [ $cnt -lt 5 ]; then
+    cnt=$((cnt + 1))
+    echo "Error in losetup for ROOT_DEV.  Retrying..."
+    sleep 5
+  else
+    echo "ERROR: losetup for ROOT_DEV failed; exiting"
+    exit 1
+  fi
 done
 
 echo "/boot: offset $BOOT_OFFSET, length $BOOT_LENGTH"
@@ -65,7 +65,7 @@ umount "${STAGE_WORK_DIR}/rootfs/boot"
 bsdtar --numeric-owner --format gnutar -C "${STAGE_WORK_DIR}/rootfs" --one-file-system -cpf - . | xz -T0 > "${NOOBS_DIR}/root.tar.xz"
 
 if [ "${USE_QCOW2}" = "1" ]; then
-	rm "$ROOTFS_DIR/etc/systemd/system/multi-user.target.wants/apply_noobs_os_config.service"
+  rm "$ROOTFS_DIR/etc/systemd/system/multi-user.target.wants/apply_noobs_os_config.service"
 fi
 
 unmount_image "${IMG_FILE}"

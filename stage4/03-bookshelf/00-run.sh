@@ -5,8 +5,8 @@ GUIDE_URL="$(curl -s "$BOOKSHELF_URL" | awk -F '[<>]' "/<TITLE>Raspberry Pi Begi
 OUTPUT="$(basename "$GUIDE_URL" | cut -f1 -d'?')"
 
 if [ ! -f "files/$OUTPUT" ]; then
-	rm files/*.pdf -f
-	curl -s "$GUIDE_URL" -o "files/$OUTPUT"
+  rm files/*.pdf -f
+  curl -s "$GUIDE_URL" -o "files/$OUTPUT"
 fi
 
 file "files/$OUTPUT" | grep -q "PDF document"
